@@ -1,6 +1,6 @@
 <resources>
     <!--BitmapNotification-->
-    <string name="image_generator_press_start">Naciśnij START na urządzeniu</string>
+    <string name="image_generator_press_start">Łączę z urządzeniem... kliknij logo.</string>
     <string name="image_generator_go_to_new_address">Przejdź do nowego adresu</string>
     <string name="image_generator_reload_this_page">Załaduj ponownie tę stronę</string>
     <string name="image_generator_address_blocked">Adres klienta zablokowany</string>

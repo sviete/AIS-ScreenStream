@@ -224,6 +224,19 @@ internal fun Application.appModule(
                 call.respondText("")
             }
 
+            //
+            get("ais-click") {
+                // TODO
+                sendEvent(HttpServer.Event.Action.StartStopRequest)
+                call.respondText("")
+            }
+            get("ais-back") {
+                // TODO
+                Runtime.getRuntime().exec("su -c 'input keyevent 4'")
+                call.respondText("")
+            }
+            //
+
             get(HttpServerFiles.FAVICON_PNG) {
                 call.respondBytes(httpServerFiles.faviconPng, ContentType.Image.PNG)
             }

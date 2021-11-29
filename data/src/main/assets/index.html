@@ -30,6 +30,7 @@
             margin: auto;
             max-height: 100vh;
             max-width: 100%
+            cursor: pointer;
         }
 
         div {
@@ -50,7 +51,7 @@
 </head>
 
 <body onmousemove="onMouseMove()">
-    <img id="stream" src="SCREEN_STREAM_ADDRESS" onerror="streamFallback()" />
+    <img onclick="aisOnClick(event)" oncontextmenu="aisOnClickBack(event)" id="stream" src="SCREEN_STREAM_ADDRESS" onerror="streamFallback()" />
     <div id="buttons">
         <input type="image" id="fullscreen" src="/fullscreen-on.png" onclick="toggleFullscreen()" />
         <input type="image" src="/start-stop.png" onclick="toggleStartStop()" />
@@ -108,6 +109,22 @@
         function toggleStartStop() {
             var xmlHttp = new XMLHttpRequest();
             xmlHttp.open("GET", window.location.origin + "/start-stop", true);
+            xmlHttp.send(null);
+        }
+
+        function aisOnClick(event) {
+            event.preventDefault();
+            console.log("click " + event );
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open("GET", window.location.origin + "/ais-click", true);
+            xmlHttp.send(null);
+        }
+
+        function aisOnClickBack(event) {
+            event.preventDefault();
+            console.log("click back");
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open("GET", window.location.origin + "/ais-back", true);
             xmlHttp.send(null);
         }
     </script>
