@@ -3,7 +3,7 @@
 
 <head>
     <meta charset=utf-8>
-    <title>Screen Stream</title>
+    <title>AIS Screen Stream</title>
     <link href="/favicon.png" rel="shortcut icon" type="image/x-icon">
     <style>
         body,
@@ -34,7 +34,7 @@
 
         div {
             visibility: hidden;
-            top: 16px;
+            bottom: 16px;
             left: 16px;
             width: 100%;
             text-align: center;
@@ -43,7 +43,7 @@
         }
 
         input {
-            background-color: #19769F;
+            background-color: #e7711e;
             padding: 4px;
         }
     </style>
@@ -56,7 +56,7 @@
         <input type="image" src="/start-stop.png" onclick="toggleStartStop()" />
     </div>
     <script>
-        if ("undefined" != typeof history.pushState) { var o = { Title: "Screen Stream", Url: "/" }; history.pushState(o, o.Title, o.Url) }
+        if ("undefined" != typeof history.pushState) { var o = { Title: "AIS Screen Stream", Url: "/" }; history.pushState(o, o.Title, o.Url) }
 
         var enableButtons = ENABLE_BUTTONS;
         if (enableButtons) document.getElementById('buttons').style.visibility = 'visible';

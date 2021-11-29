@@ -20,9 +20,9 @@ abstract class AdFragment(@LayoutRes contentLayoutId: Int) : Fragment(contentLay
     private lateinit var adSize: AdSize
     private val ads: MutableMap<String, Long> by lazy(LazyThreadSafetyMode.NONE) {
         (requireActivity().application as BaseApp).lastAdLoadTimeMap.apply {
-            putIfAbsent(BuildConfig.AD_UNIT_ID_A, 0)
-            putIfAbsent(BuildConfig.AD_UNIT_ID_B, 0)
-            putIfAbsent(BuildConfig.AD_UNIT_ID_C, 0)
+            putIfAbsent("1", 0)
+            putIfAbsent("2", 0)
+            putIfAbsent("3", 0)
         }
     }
 

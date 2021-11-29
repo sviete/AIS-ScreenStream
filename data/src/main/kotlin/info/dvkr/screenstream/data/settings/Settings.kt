@@ -44,13 +44,13 @@ interface Settings : SettingsReadOnly {
     }
 
     object Default {
-        var NIGHT_MODE = if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) 3 else -1
+        var NIGHT_MODE = 2
         const val STOP_ON_SLEEP = false
-        const val START_ON_BOOT = false
+        const val START_ON_BOOT = true
         const val AUTO_START_STOP = false
         const val NOTIFY_SLOW_CONNECTIONS = true
 
-        const val HTML_ENABLE_BUTTONS = false
+        const val HTML_ENABLE_BUTTONS = true
         const val HTML_BACK_COLOR = -16777216 // "ff000000".toLong(radix = 16).toInt()
 
         const val VR_MODE_DISABLE = 0
@@ -73,11 +73,11 @@ interface Settings : SettingsReadOnly {
         const val PIN = "0000"
         const val BLOCK_ADDRESS = true
 
-        const val USE_WIFI_ONLY = true
+        const val USE_WIFI_ONLY = false
         const val ENABLE_IPV6 = false
         const val ENABLE_LOCAL_HOST = false
         const val LOCAL_HOST_ONLY = false
-        const val SERVER_PORT = 8080
+        const val SERVER_PORT = 9966
         const val LOGGING_VISIBLE = false
         const val LOGGING_ON = false
 

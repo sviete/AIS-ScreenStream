@@ -40,7 +40,7 @@ class NotificationBitmap(context: Context) {
     private fun generateImage(message: String, logo: Bitmap): Bitmap {
         val bitmap: Bitmap = Bitmap.createBitmap(640, 400, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
-        canvas.drawRGB(25, 118, 159)
+        canvas.drawRGB(0, 0, 0)
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)
         canvas.drawBitmap(logo, 192f, 16f, paint)
 

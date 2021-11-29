@@ -1,3 +1,10 @@
+ais-dom-keystore.jks
+ais.properties
+app/build.gradle
+
+app/firebase/*
+app/firebasefree/*
+
 # Built application files
 *.apk
 *.ap_

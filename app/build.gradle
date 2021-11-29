@@ -4,19 +4,39 @@ apply plugin: "kotlin-parcelize"
 apply plugin: "com.google.gms.google-services"
 apply plugin: "com.google.firebase.crashlytics"
 
+def apikeyPropertiesFile = rootProject.file("ais.properties");
+def apikeyProperties = new Properties()
+apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+
 android {
     compileSdkVersion(31)
     buildToolsVersion("31.0.0")
 
+    signingConfigs {
+        debug {
+            storeFile file('../ais-dom-keystore.jks')
+            storePassword apikeyProperties['RELEASE_STORE_PASSWORD']
+            keyAlias 'key0'
+            keyPassword apikeyProperties['RELEASE_STORE_PASSWORD']
+        }
+        release {
+            storeFile file('../ais-dom-keystore.jks')
+            storePassword apikeyProperties['RELEASE_STORE_PASSWORD']
+            keyAlias 'key0'
+            keyPassword apikeyProperties['RELEASE_STORE_PASSWORD']
+        }
+    }
+
     defaultConfig {
-        applicationId = "info.dvkr.screenstream"
+        applicationId = "pl.sviete.screenstream"
         minSdkVersion(21)
         targetSdkVersion(31)
         versionCode = 30804
-        versionName = "3.8.4"
+        versionName = "1.0.0"
         resConfigs("en", "ru", "pt-rBR", "zh-rTW", "fr-rFR", "fa", "it", "pl", "hi", "de", "sk", "es", "ar", "ja", "gl", "ca", "uk", "nl")
 
         vectorDrawables.useSupportLibrary = true
+        signingConfig signingConfigs.release
     }
 
     buildTypes {
@@ -46,9 +66,9 @@ android {
     productFlavors {
         create("firebase") {
             manifestPlaceholders = ["adMobPubId": "${localProps.getProperty("ad.pubId")}"]
-            buildConfigField "String", "AD_UNIT_ID_A", localProps.getProperty("ad.unitIdA", "")
-            buildConfigField "String", "AD_UNIT_ID_B", localProps.getProperty("ad.unitIdB", "")
-            buildConfigField "String", "AD_UNIT_ID_C", localProps.getProperty("ad.unitIdC", "")
+            buildConfigField "int", "AD_UNIT_ID_A", localProps.getProperty("ad.unitIdA", "1")
+            buildConfigField "int", "AD_UNIT_ID_B", localProps.getProperty("ad.unitIdB", "2")
+            buildConfigField "int", "AD_UNIT_ID_C", localProps.getProperty("ad.unitIdC", "3")
         }
         create("firebasefree") {
             manifestPlaceholders = ["adMobPubId": ""]
