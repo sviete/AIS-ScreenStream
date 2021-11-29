@@ -49,15 +49,15 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         }
 
         binding.bFragmentAboutSources.setOnClickListener {
-            openStringUrl("https://github.com/dkrivoruchko/ScreenStream")
+            openStringUrl("https://github.com/sviete/AIS-ScreenStream")
         }
 
         binding.bFragmentPrivacyPolicy.setOnClickListener {
-            openStringUrl("https://github.com/dkrivoruchko/ScreenStream/blob/master/PrivacyPolicy.md")
+            openStringUrl("https://github.com/sviete/AIS-ScreenStream/blob/master/PrivacyPolicy.md")
         }
 
         binding.bFragmentLicense.setOnClickListener {
-            openStringUrl("https://github.com/dkrivoruchko/ScreenStream/blob/master/LICENSE")
+            openStringUrl("https://github.com/sviete/AIS-ScreenStream/blob/master/LICENSE")
         }
 
     }
