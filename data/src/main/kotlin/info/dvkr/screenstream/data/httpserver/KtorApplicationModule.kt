@@ -1,5 +1,8 @@
 package info.dvkr.screenstream.data.httpserver
 
+import android.content.res.Resources
+import android.os.Build
+import android.util.Log
 import com.elvishew.xlog.XLog
 import info.dvkr.screenstream.data.model.FatalError
 import info.dvkr.screenstream.data.other.getLog
@@ -18,10 +21,16 @@ import io.ktor.utils.io.*
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.*
+import java.io.BufferedReader
+import java.io.InputStreamReader
 import java.net.InetSocketAddress
 import java.util.*
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.atomic.AtomicReference
+import android.util.DisplayMetrics
+
+
+
 
 @OptIn(InternalAPI::class)
 internal fun Application.appModule(
@@ -224,19 +233,46 @@ internal fun Application.appModule(
                 call.respondText("")
             }
 
-            //
+            // -------------------------------------------------------------------
+            // AIS START
             get("ais-click") {
-                // TODO
-                sendEvent(HttpServer.Event.Action.StartStopRequest)
+                val x = call.parameters["x"]
+                val y = call.parameters["y"]
+
+                val dispHeight = Resources.getSystem().displayMetrics.heightPixels
+                val dispWidth = Resources.getSystem().displayMetrics.widthPixels
+
+                var tapY = (y?.toInt() ?: 0) * dispHeight / 100
+                var tapX = (x?.toInt() ?: 0) *dispWidth / 100
+
+                val command = arrayOf("su", "-c", "input tap $tapX $tapY")
+                try {
+                    val process: Process = Runtime.getRuntime().exec(command)
+                    BufferedReader(InputStreamReader(process.inputStream)).forEachLine {
+                        Log.d("ais", it)
+                    }
+                } catch (e: Exception) {
+                    Log.e("ais", "Cannot execute command [$command].$e")
+                }
                 call.respondText("")
             }
+
             get("ais-back") {
-                // TODO
-                Runtime.getRuntime().exec("su -c 'input keyevent 4'")
+                val command = arrayOf("su", "-c", "input keyevent 4")
+                try {
+                    val process: Process = Runtime.getRuntime().exec(command)
+                    // Read the lines using BufferedReader
+                    BufferedReader(InputStreamReader(process.inputStream)).forEachLine {
+                        // Do something on each line read
+                        Log.d("ais", it)
+                    }
+                } catch (e: Exception) {
+                    Log.e("ais", "Cannot execute command [$command].$e")
+                }
                 call.respondText("")
-                log.error("xxxx")
             }
-            //
+            // AIS STOP
+            // -------------------------------------------------------------------
 
             get(HttpServerFiles.FAVICON_PNG) {
                 call.respondBytes(httpServerFiles.faviconPng, ContentType.Image.PNG)
