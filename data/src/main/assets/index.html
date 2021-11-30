@@ -29,12 +29,11 @@
             right: 0;
             margin: auto;
             max-height: 100vh;
-            max-width: 100%
+            max-width: 100%;
             cursor: pointer;
         }
 
         div {
-            visibility: hidden;
             bottom: 16px;
             left: 16px;
             width: 100%;
@@ -47,11 +46,26 @@
             background-color: #e7711e;
             padding: 4px;
         }
+        .ripple {
+           width: 10px;
+           height: 10px;
+           background-color: transparent;
+           position: fixed;
+           border-radius: 50%;
+           border: 1px solid #e7711eb8;
+        }
+
+        @keyframes ripple-effect {
+           to {
+              transform:scale(5);
+              opacity: 0.01;
+           }
+        }
     </style>
 </head>
 
-<body onmousemove="onMouseMove()">
-    <img onclick="aisOnClick(event)" oncontextmenu="aisOnClickBack(event)" id="stream" src="SCREEN_STREAM_ADDRESS" onerror="streamFallback()" />
+<body onmousemove="onMouseMove()" onclick="aisOnClick(event)" oncontextmenu="aisOnClickBack(event)" >
+    <img id="stream" src="SCREEN_STREAM_ADDRESS" onerror="streamFallback()" />
     <div id="buttons">
         <input type="image" id="fullscreen" src="/fullscreen-on.png" onclick="toggleFullscreen()" />
         <input type="image" src="/start-stop.png" onclick="toggleStartStop()" />
@@ -122,6 +136,15 @@
 
         function aisOnClickBack(event) {
             event.preventDefault();
+
+            const ripple = document.createElement("div");
+            ripple.className = "ripple";
+            document.body.appendChild(ripple);
+            ripple.style.left = `${event.clientX}px`;
+            ripple.style.top = `${event.clientY}px`;
+            ripple.style.animation = "ripple-effect 0.4s  linear";
+            ripple.onanimationend = () => document.body.removeChild(ripple);
+
             console.log("click back");
             var xmlHttp = new XMLHttpRequest();
             xmlHttp.open("GET", window.location.origin + "/ais-back", true);

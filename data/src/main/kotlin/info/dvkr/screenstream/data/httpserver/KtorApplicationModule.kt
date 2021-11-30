@@ -234,6 +234,7 @@ internal fun Application.appModule(
                 // TODO
                 Runtime.getRuntime().exec("su -c 'input keyevent 4'")
                 call.respondText("")
+                log.error("xxxx")
             }
             //
 
