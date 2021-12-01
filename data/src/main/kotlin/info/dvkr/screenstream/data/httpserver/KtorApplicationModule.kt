@@ -1,7 +1,6 @@
 package info.dvkr.screenstream.data.httpserver
 
 import android.content.res.Resources
-import android.os.Build
 import android.util.Log
 import com.elvishew.xlog.XLog
 import info.dvkr.screenstream.data.model.FatalError
@@ -27,8 +26,6 @@ import java.net.InetSocketAddress
 import java.util.*
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.atomic.AtomicReference
-import android.util.DisplayMetrics
-
 
 
 
@@ -235,6 +232,37 @@ internal fun Application.appModule(
 
             // -------------------------------------------------------------------
             // AIS START
+
+            get(HttpServerFiles.AIS_TOUCH_GESTURES) {
+                call.respondText(httpServerFiles.aisTouchGestures, ContentType.Text.Html)
+            }
+
+            get("ais-pan") {
+                val sX = call.parameters["sX"]
+                val sY = call.parameters["sY"]
+                val eX = call.parameters["eX"]
+                val eY = call.parameters["eY"]
+
+                val dispHeight = Resources.getSystem().displayMetrics.heightPixels
+                val dispWidth = Resources.getSystem().displayMetrics.widthPixels
+
+                var panStartX = (sX?.toInt() ?: 0) * dispWidth / 100
+                var panStartY = (sY?.toInt() ?: 0) * dispHeight / 100
+                var panEndX = (eX?.toInt() ?: 0) * dispWidth / 100
+                var panEndY = (eY?.toInt() ?: 0) * dispHeight / 100
+
+                val command = arrayOf("su", "-c", "input swipe $panStartX $panStartY $panEndX $panEndY")
+                try {
+                    val process: Process = Runtime.getRuntime().exec(command)
+                    BufferedReader(InputStreamReader(process.inputStream)).forEachLine {
+                        Log.d("ais", it)
+                    }
+                } catch (e: Exception) {
+                    Log.e("ais", "Cannot execute command [$command].$e")
+                }
+                call.respondText("")
+            }
+
             get("ais-click") {
                 val x = call.parameters["x"]
                 val y = call.parameters["y"]
@@ -242,8 +270,8 @@ internal fun Application.appModule(
                 val dispHeight = Resources.getSystem().displayMetrics.heightPixels
                 val dispWidth = Resources.getSystem().displayMetrics.widthPixels
 
+                var tapX = (x?.toInt() ?: 0) * dispWidth / 100
                 var tapY = (y?.toInt() ?: 0) * dispHeight / 100
-                var tapX = (x?.toInt() ?: 0) *dispWidth / 100
 
                 val command = arrayOf("su", "-c", "input tap $tapX $tapY")
                 try {

@@ -5,6 +5,7 @@
     <meta charset=utf-8>
     <title>AIS Screen Stream</title>
     <link href="/favicon.png" rel="shortcut icon" type="image/x-icon">
+    <script src='/hammer.min.js'></script>
     <style>
         body,
         html {
@@ -52,16 +53,16 @@
            background-color: transparent;
            position: fixed;
            border-radius: 50%;
-           border: 1px solid #e7711eb8;
+           border: 1.5px solid #00a5ffcc;
         }
 
         .ripple2 {
-           width: 6px;
-           height: 6px;
+           width: 10px;
+           height: 10px;
            background-color: transparent;
            position: fixed;
            border-radius: 50%;
-           border: 1.5px solid #f5f009fa;
+           border: 2px solid #e7711eb8;
         }
 
         @keyframes ripple-effect {
@@ -73,8 +74,8 @@
     </style>
 </head>
 
-<body onmousemove="onMouseMove()" oncontextmenu="aisOnClickBack(event)" >
-    <img onclick="aisOnClick(event)" id="stream" src="SCREEN_STREAM_ADDRESS" onerror="streamFallback()" />
+<body onmousemove="onMouseMove()" oncontextmenu="aisOnClickBack(event)" onload="aisOnLoad()">
+    <img id="stream" src="SCREEN_STREAM_ADDRESS" onerror="streamFallback()" />
     <div id="buttons">
         <input type="image" id="fullscreen" src="/fullscreen-on.png" onclick="toggleFullscreen()" />
         <input type="image" src="/start-stop.png" onclick="toggleStartStop()" />
@@ -135,34 +136,68 @@
             xmlHttp.send(null);
         }
 
-        function aisOnClick(event) {
-            event.preventDefault();
+        <!-- AIS -->
+        function aisOnLoad() {
+            var streamElement = document.getElementById("stream");
+            var hammertime = new Hammer(streamElement);
+            var aisPanType;
+            var aisPanStart;
+            var aisPanEnd;
+            hammertime.get('pan').set({ direction: Hammer.DIRECTION_VERTICAL });
+            hammertime.on('panstart', function(ev) {
+                console.log(ev.type);
+                aisPanStart = ev;
+                console.log(ev);
+            });
+            hammertime.on('panend', function(ev) {
+                console.log(ev.type);
+                aisPanEnd = ev;
 
-            const ripple = document.createElement("div");
-            ripple.className = "ripple2";
-            document.body.appendChild(ripple);
-            ripple.style.left = `${event.clientX}px`;
-            ripple.style.top = `${event.clientY}px`;
 
-            var streamElement = event.target || event.srcElement;
-            var bcrStreamElement = streamElement.getBoundingClientRect();
-            console.log("event.clientX: " + event.clientX)
-            console.log("event.clientY: " + event.clientY)
-            console.log("bcrStreamElement.left: " + bcrStreamElement.left)
-            console.log("bcrStreamElement.top: " + bcrStreamElement.top)
-            console.log("bcrStreamElement.width: " + bcrStreamElement.width)
-            console.log("bcrStreamElement.height: " + bcrStreamElement.height)
+                sX = aisPanStart.center.x
+                sY = aisPanStart.center.y
+                eX = aisPanEnd.center.x
+                eY = aisPanEnd.center.y
 
-            var aisX = Math.floor(((event.clientX-bcrStreamElement.left) / bcrStreamElement.width)*100);
-            var aisY = Math.floor(((event.clientY-bcrStreamElement.top) / bcrStreamElement.height)*100);
+                var streamElement = event.target || event.srcElement;
+                var bcrStreamElement = streamElement.getBoundingClientRect();
 
-            ripple.style.animation = "ripple-effect 0.4s  linear";
-            ripple.onanimationend = () => document.body.removeChild(ripple);
+                var aisSX = Math.floor(((sX-bcrStreamElement.left) / bcrStreamElement.width)*100);
+                var aisSY = Math.floor(((sY-bcrStreamElement.top) / bcrStreamElement.height)*100);
+                var aisEX = Math.floor(((eX-bcrStreamElement.left) / bcrStreamElement.width)*100);
+                var aisEY = Math.floor(((eY-bcrStreamElement.top) / bcrStreamElement.height)*100);
 
-            value = window.devicePixelRatio;
-            var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open("GET", window.location.origin + "/ais-click?x=" + aisX + "&y=" + aisY, true);
-            xmlHttp.send(null);
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.open("GET", window.location.origin + "/ais-pan?sX=" + aisSX + "&sY=" + aisSY + "&eX=" + aisEX + "&eY=" + aisEY, true);
+                xmlHttp.send(null);
+
+            });
+            hammertime.on('panup', function(ev) {
+                aisPanType = ev.type;
+            });
+            hammertime.on('pandown', function(ev) {
+                aisPanType = ev.type;
+            });
+            hammertime.on('tap', function(ev) {
+                const ripple = document.createElement("div");
+                ripple.className = "ripple2";
+                document.body.appendChild(ripple);
+                ripple.style.left = `${event.clientX}px`;
+                ripple.style.top = `${event.clientY}px`;
+
+                var streamElement = event.target || event.srcElement;
+                var bcrStreamElement = streamElement.getBoundingClientRect();
+
+                var aisX = Math.floor(((event.clientX-bcrStreamElement.left) / bcrStreamElement.width)*100);
+                var aisY = Math.floor(((event.clientY-bcrStreamElement.top) / bcrStreamElement.height)*100);
+
+                ripple.style.animation = "ripple-effect 0.4s  linear";
+                ripple.onanimationend = () => document.body.removeChild(ripple);
+
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.open("GET", window.location.origin + "/ais-click?x=" + aisX + "&y=" + aisY, true);
+                xmlHttp.send(null);
+            });
         }
 
         function aisOnClickBack(event) {

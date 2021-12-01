@@ -16,6 +16,7 @@ class HttpServerFiles(context: Context, private val settingsReadOnly: SettingsRe
         const val FULLSCREEN_ON_PNG = "fullscreen-on.png"
         const val FULLSCREEN_OFF_PNG = "fullscreen-off.png"
         const val START_STOP_PNG = "start-stop.png"
+        const val AIS_TOUCH_GESTURES = "hammer.min.js"
 
         private const val INDEX_HTML = "index.html"
         private const val INDEX_HTML_BACKGROUND_COLOR = "BACKGROUND_COLOR"
@@ -48,6 +49,8 @@ class HttpServerFiles(context: Context, private val settingsReadOnly: SettingsRe
 
     private val baseIndexHtml =
         String(applicationContext.getFileFromAssets(INDEX_HTML), StandardCharsets.UTF_8)
+    val aisTouchGestures =
+        String(applicationContext.getFileFromAssets(AIS_TOUCH_GESTURES), StandardCharsets.UTF_8)
 
     private val basePinRequestHtml =
         String(applicationContext.getFileFromAssets(PINREQUEST_HTML), StandardCharsets.UTF_8)
