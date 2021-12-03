@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">ScreenStream</string>
+    <string name="app_name" translatable="false">AisScreenStream</string>
 
     <string name="error_title">Error</string>
     <string name="error_port_in_use">Port already in use. Choose another one.</string>
