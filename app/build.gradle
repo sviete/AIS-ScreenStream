@@ -31,8 +31,8 @@ android {
         applicationId = "pl.sviete.screenstream"
         minSdkVersion(21)
         targetSdkVersion(31)
-        versionCode = 30806
-        versionName = "1.0.2"
+        versionCode = 30807
+        versionName = "1.0.3"
         resConfigs("en", "ru", "pt-rBR", "zh-rTW", "fr-rFR", "fa", "it", "pl", "hi", "de", "sk", "es", "ar", "ja", "gl", "ca", "uk", "nl")
 
         vectorDrawables.useSupportLibrary = true
