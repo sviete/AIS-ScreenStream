@@ -75,7 +75,7 @@ interface Settings : SettingsReadOnly {
 
         const val USE_WIFI_ONLY = false
         const val ENABLE_IPV6 = false
-        const val ENABLE_LOCAL_HOST = false
+        const val ENABLE_LOCAL_HOST = true
         const val LOCAL_HOST_ONLY = false
         const val SERVER_PORT = 9966
         const val LOGGING_VISIBLE = false
