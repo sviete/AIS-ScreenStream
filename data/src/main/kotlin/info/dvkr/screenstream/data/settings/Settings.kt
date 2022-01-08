@@ -64,7 +64,8 @@ interface Settings : SettingsReadOnly {
         const val IMAGE_CROP_LEFT = 0
         const val IMAGE_CROP_RIGHT = 0
         const val JPEG_QUALITY = 80
-        const val RESIZE_FACTOR = 50
+        // ais 50 -> 100
+        const val RESIZE_FACTOR = 100
         const val ROTATION = Values.ROTATION_0
         const val MAX_FPS = 30
 
