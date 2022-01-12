@@ -1,7 +1,10 @@
 package info.dvkr.screenstream.data.httpserver
 
+import android.app.Instrumentation
+import android.app.UiAutomation
 import android.content.res.Resources
 import android.util.Log
+import android.view.KeyEvent
 import com.elvishew.xlog.XLog
 import info.dvkr.screenstream.data.model.FatalError
 import info.dvkr.screenstream.data.other.getLog
@@ -253,10 +256,7 @@ internal fun Application.appModule(
 
                 val command = arrayOf("su", "-c", "input swipe $panStartX $panStartY $panEndX $panEndY")
                 try {
-                    val process: Process = Runtime.getRuntime().exec(command)
-                    BufferedReader(InputStreamReader(process.inputStream)).forEachLine {
-                        Log.d("ais", it)
-                    }
+                    Runtime.getRuntime().exec(command)
                 } catch (e: Exception) {
                     Log.e("ais", "Cannot execute command [$command].$e")
                 }
@@ -275,10 +275,7 @@ internal fun Application.appModule(
 
                 val command = arrayOf("su", "-c", "input tap $tapX $tapY")
                 try {
-                    val process: Process = Runtime.getRuntime().exec(command)
-                    BufferedReader(InputStreamReader(process.inputStream)).forEachLine {
-                        Log.d("ais", it)
-                    }
+                    Runtime.getRuntime().exec(command)
                 } catch (e: Exception) {
                     Log.e("ais", "Cannot execute command [$command].$e")
                 }
@@ -286,19 +283,15 @@ internal fun Application.appModule(
             }
 
             get("ais-back") {
-                val command = arrayOf("su", "-c", "input keyevent 4")
+               val command = arrayOf("su", "-c", "input keyevent 4")
                 try {
-                    val process: Process = Runtime.getRuntime().exec(command)
-                    // Read the lines using BufferedReader
-                    BufferedReader(InputStreamReader(process.inputStream)).forEachLine {
-                        // Do something on each line read
-                        Log.d("ais", it)
-                    }
+                    Runtime.getRuntime().exec(command)
                 } catch (e: Exception) {
-                    Log.e("ais", "Cannot execute command [$command].$e")
+                    Log.e("ais", "Cannot execute command [back].$e")
                 }
                 call.respondText("")
             }
+            // -------------------------------------------------------------------
             // AIS STOP
             // -------------------------------------------------------------------
 
